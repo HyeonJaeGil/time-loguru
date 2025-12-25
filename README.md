@@ -1,18 +1,18 @@
-# Python package for time consumption tracker
+# Python package for time tracking with Loguru
 
 ## Usage
 
 ```bash
 
 from loguru import logger
-from time_consumption_tracker import time_tracker
+from time_loguru import time_logger
 
-time_tracker.configure(emit_each=True)   # emit a line for each completed task
-time_tracker.add_event_sink(FILE_TO_SAVE_TIME_TRACKING_LOGS) # optional
+time_logger.configure(emit_each=True)
+time_logger.add_event_sink(FILE_TO_SAVE_TIME_TRACKING_LOGS)
 
-with time_tracker.info("LOAD_DATA"):
+with time_logger.info("LOAD_DATA"):
     ...  # work to be measured
 
-time_tracker.summary()                   # prints summary through loguru
+time_logger.summary()
 
 ```

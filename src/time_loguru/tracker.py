@@ -1,4 +1,3 @@
-# time_consumption_tracker/tracker.py
 from __future__ import annotations
 
 import time
@@ -150,7 +149,7 @@ class TimeTracker:
             tracker.add_event_sink("timing_only.log", rotation="10 MB", retention="7 days")
         """
         def _only_tracker_events(record) -> bool:
-            return record.get("extra", {}).get("event") == "time_tracker"
+            return record.get("extra", {}).get("event") == "time_logger"
 
         sink_id = self._logger.add(file_path, filter=_only_tracker_events, **add_kwargs)
         with self._lock:
@@ -198,7 +197,7 @@ class TimeTracker:
         rendered = self._render_summary(stats, title=title)
 
         # Tag it as a tracker summary event
-        self._logger.bind(event="time_tracker", kind="summary").opt(raw=True).log(
+        self._logger.bind(event="time_logger", kind="summary").opt(raw=True).log(
             self._summary_level, rendered + "\n"
         )
 
@@ -217,7 +216,7 @@ class TimeTracker:
         if self._emit_each:
             status = "OK" if exc_type is None else f"EXC:{getattr(exc_type, '__name__', str(exc_type))}"
             bound = self._logger.bind(
-                event="time_tracker",
+                event="time_logger",
                 kind="event",
                 task=task,
                 elapsed_s=elapsed_s,
@@ -288,4 +287,3 @@ class TimeTracker:
         lines.append("-" * len(header))
         lines.append(f"{'TOTAL (all tasks)':30}  {'':7}  {self._fmt_time(grand_total):>14}")
         return "\n".join(lines)
-
